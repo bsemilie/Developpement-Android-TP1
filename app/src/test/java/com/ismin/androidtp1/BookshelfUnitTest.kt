@@ -3,23 +3,27 @@ package com.ismin.androidtp1
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class BookshelfUnitTest {
     private val theLordOfTheRings = Book(
         title = "The Lord of the Rings",
         author = "J. R. R. Tolkien",
-        date = "1954-02-15"
+        date = LocalDate.parse("1954-02-15", DateTimeFormatter.ISO_DATE)
+
     )
 
     private val theHobbit = Book(
         title = "The Hobbit",
         author = "J. R. R. Tolkien",
-        date = "1937-09-21"
+        date = LocalDate.parse("1937-09-21", DateTimeFormatter.ISO_DATE)
     )
     private val aLaRechercheDuTempsPerdu = Book(
         title = "À la recherche du temps perdu",
         author = "Marcel Proust",
-        date = "1927"
+        date = LocalDate.parse("1927-01-01", DateTimeFormatter.ISO_DATE)
     );
 
     private lateinit var bookshelf: Bookshelf
@@ -56,7 +60,7 @@ class BookshelfUnitTest {
 
         assertEquals(
             bookshelf.getBooksOf("J. R. R. Tolkien"),
-            arrayListOf(theHobbit, theLordOfTheRings)
+            arrayListOf(theLordOfTheRings, theHobbit)
         )
     }
 
@@ -76,5 +80,23 @@ class BookshelfUnitTest {
 
         bookshelf.addBook(theLordOfTheRings);
         assertEquals(bookshelf.getTotalNumberOfBooks(), 1)
+    }
+
+    @Test
+    fun should_return_all_books_published_before_1938() {
+        bookshelf.addBook(aLaRechercheDuTempsPerdu);
+        bookshelf.addBook(theLordOfTheRings);
+        bookshelf.addBook(theHobbit);
+
+        assertEquals(
+            bookshelf.getBooksPublishedBefore(
+                LocalDate.parse(
+                    "1938-01-01",
+                    DateTimeFormatter.ISO_DATE
+                )
+            ),
+            arrayListOf(aLaRechercheDuTempsPerdu, theHobbit)
+        );
+
     }
 }
