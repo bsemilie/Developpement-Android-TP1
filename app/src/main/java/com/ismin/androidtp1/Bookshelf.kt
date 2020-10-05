@@ -1,13 +1,13 @@
-package com.ismin.androidtp1
+package com. ismin.androidtp1
 
 import java.time.LocalDate
 
 class Bookshelf {
 
-    val bookshelf: ArrayList<Book?>;
+    private val bookshelf: ArrayList<Book>;
 
     constructor() {
-        this.bookshelf = arrayListOf<Book?>();
+        this.bookshelf = arrayListOf<Book>();
     }
 
     fun addBook(book: Book) {
@@ -15,7 +15,7 @@ class Bookshelf {
             this.bookshelf.add(book);
         } else {
             for (i in 0 until this.bookshelf.size) {
-                if (this.bookshelf[i]?.title.equals(book.title)) {
+                if (this.bookshelf[i].title.equals(book.title)) {
                     return;
                 }
             }
@@ -24,28 +24,22 @@ class Bookshelf {
     }
 
     fun getBook(title: String): Book? {
-        var lclBook: Book?;
-        lclBook = null;
 
-        for (i in 0 until this.bookshelf.size) {
-            if (this.bookshelf[i]?.title.equals(title)) {
-                lclBook = this.bookshelf[i];
-            }
-        }
-        return lclBook;
+       return this.bookshelf.find{it.title == title};
     }
 
-    private fun selectorSort(book: Book?): String? = book?.title
 
-    fun getAllBooks(): ArrayList<Book?> {
-        this.bookshelf.sortBy { selectorSort(it) };
+
+
+    fun getAllBooks(): ArrayList<Book> {
+        this.bookshelf.sortBy { it.title };
         return (this.bookshelf);
     }
 
-    private fun selectorFilterAuthor(book: Book?): String? = book?.author
+
 
     fun getBooksOf(author: String): List<Book?> {
-        val lclBookshelf = this.bookshelf.filter { selectorFilterAuthor(it) == author };
+        val lclBookshelf = this.bookshelf.filter {it.author == author };
         return lclBookshelf;
     }
 
@@ -54,10 +48,10 @@ class Bookshelf {
         return this.bookshelf.size;
     }
 
-    private fun selectorFilterDate(book: Book?): LocalDate? = book?.date
+
 
     fun getBooksPublishedBefore(adate: LocalDate): List<Book?> {
-        val lclBookshelf = this.bookshelf.filter { selectorFilterDate(it)!! <= adate };
+        val lclBookshelf = this.bookshelf.filter { it.date <= adate };
         return lclBookshelf;
     }
 }
